@@ -3,17 +3,19 @@
 {% block title %} Inventory List {% endblock title %}
 
 {% block content %}
-    <div class="input-group mt-4">
-      <span class="input-group-text">Search</span>
-      <input
-              type="text"
-              id="search-text"
-              class="form-control"
-              placeholder="Search Text"
-              aria-label="Search"
-              aria-labelledby="Search"
-              onchange="filterInventories()"
-      >
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="input-group mt-4" style="width: 400px;">
+          <span class="input-group-text">Search</span>
+          <input
+                  type="text"
+                  id="search-text"
+                  class="form-control"
+                  placeholder="Search Text"
+                  aria-label="Search"
+                  aria-labelledby="Search"
+                  onchange="filterInventories()"
+          >
+        </div>
     </div>
 
     <div class="inventory-list row d-flex justify-content-center align-items-center mt-4"></div>
@@ -22,7 +24,7 @@
 {% block extra_body %}
     <script>
         const fetchInventories = async (name) => {
-            const url = '/api/inventory/' + (name !== undefined ? `?name=${name}` : '');
+            const url = `{% url 'inventory-api:inventory_list' %}` + (name !== undefined ? `?name=${name}` : '');
             const response = await fetch(url);
             if (response.status !== 200) {
                 alert('Something went wrong!!');
