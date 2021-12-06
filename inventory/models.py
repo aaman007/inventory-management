@@ -18,6 +18,7 @@ class Inventory(AbstractTimestampModel):
     )
 
     class Meta:
+        ordering = ['-id']
         verbose_name = _('Inventory')
         verbose_name_plural = _('Inventories')
 
@@ -29,6 +30,7 @@ class Supplier(AbstractTimestampModel):
     name = models.CharField(verbose_name=_('Name'), max_length=200)
 
     class Meta:
+        ordering = ['-id']
         verbose_name = _('Supplier')
         verbose_name_plural = _('Suppliers')
 

@@ -39,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third-party Apps
+    'rest_framework',
+    'markdown',
+    'django_filters',
+
     # Local Apps
     'accounts',
     'core',
@@ -106,6 +111,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# DRF configs
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S.%f%z',
+    'DEFAULT_FILTER_BACKENDS': [
+        'rest_framework.filters.SearchFilter',
+        'core.api.filters.OrderingFilter',
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ]
+
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -125,6 +149,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIRS = [
+    'static_local'
+]
+
+# Media Files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.highlight-hover {
+
+}
+
+.highlight-hover:hover {
+    border: 1px solid deepskyblue;
+}
+
+.no-content {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 70px;
+}
+

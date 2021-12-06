@@ -1,10 +1,69 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>
+        {% block title %} Inventory {% endblock title %}
+    </title>
+
+    <link href="{% static 'core/base.css' %}" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    {% block extra_head %} {% endblock extra_head %}
 </head>
 <body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'inventory:inventory_list' %}">Inventory</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link {{ home_nav }}" href="{% url 'inventory:inventory_list' %}">
+                                Home
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
+    <main>
+        <div class="container">
+            {% block content %} {% endblock content %}
+        </div>
+    </main>
+
+    <!-- Bootstrap Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <script>
+        const parseQueryParams = () => {
+            const paramPairs = window.location.search.slice(1).split('&');
+            if (paramPairs[0] === '') return {};
+            return paramPairs.reduce((data , pair) => {
+                const [key, value] = pair.split('=');
+                return {
+                    ...data,
+                    [key]: value
+                };
+            }, {});
+        };
+    </script>
+
+    {% block extra_body %} {% endblock extra_body %}
 </body>
 </html>

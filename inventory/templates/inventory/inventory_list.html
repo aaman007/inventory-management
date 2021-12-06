@@ -1,0 +1,85 @@
+{% extends 'inventory/base.html' %}
+
+{% block title %} Inventory List {% endblock title %}
+
+{% block content %}
+    <div class="input-group mt-4">
+      <span class="input-group-text">Search</span>
+      <input
+              type="text"
+              id="search-text"
+              class="form-control"
+              placeholder="Search Text"
+              aria-label="Search"
+              aria-labelledby="Search"
+              onchange="filterInventories()"
+      >
+    </div>
+
+    <div class="inventory-list row d-flex justify-content-center align-items-center mt-4"></div>
+{% endblock content %}
+
+{% block extra_body %}
+    <script>
+        const fetchInventories = async (name) => {
+            const url = '/api/inventory/' + (name !== undefined ? `?name=${name}` : '');
+            const response = await fetch(url);
+            if (response.status !== 200) {
+                alert('Something went wrong!!');
+            }
+            return await response.json();
+        };
+
+        const renderInventory = inventory => {
+            const availabilityColor = inventory.availability ? 'text-success' : 'text-warning';
+            const availabilityText = inventory.availability ? 'In stock' : 'Out of stock';
+            return `
+                <div class="col-sm-12 col-lg-3 m-2" onclick="viewInventory(${inventory.id})">
+                    <div class="card cursor-pointer highlight-hover">
+                        <div class="card-body text-center">
+                            <p> ${ inventory.name } </p>
+                            <p> <span class="text-danger"> Supplier: </span> ${ inventory.supplier.name } </p>
+                            <p class="${availabilityColor}">${availabilityText}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const renderNoContent = () => {
+            return `
+            <div class="no-content">
+                <h2 class="text-danger"> No Content Found! </h2>
+            </div>
+            `;
+        };
+
+        const renderInventories = async () => {
+            const queryParams = parseQueryParams();
+            const inventoryHolder = document.querySelector('.inventory-list');
+            const inventories = await fetchInventories(queryParams.name);
+            inventoryHolder.innerHTML = inventories.map(renderInventory).join('') || renderNoContent();
+        };
+
+        const viewInventory = inventoryId => {
+            window.location = `{% url 'inventory:inventory_detail' 123 %}`.replace('/123/', `/${inventoryId}/`);
+        };
+
+        const filterInventories = async () => {
+            const inventoryHolder = document.querySelector('.inventory-list');
+            const searchText = document.querySelector('#search-text').value;
+
+            // Update Contents
+            const inventories = await fetchInventories(searchText);
+            inventoryHolder.innerHTML = inventories.map(renderInventory).join('') || renderNoContent();
+
+            // Update URL
+            const newUrl = window.location.pathname + (searchText ? `?name=${searchText}` : '');
+            history.replaceState({}, undefined, newUrl);
+        };
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            renderInventories();
+        });
+    </script>
+{% endblock extra_body %}
