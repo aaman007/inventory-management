@@ -7,6 +7,7 @@ from inventory.models import Inventory, Supplier
 class InventoryAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'description', 'stock', 'availability', 'supplier', 'modified_at']
     list_filter = ['availability', 'supplier']
+    list_editable = ['stock', 'availability']
     search_fields = ['name', 'supplier']
 
 

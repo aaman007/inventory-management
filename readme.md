@@ -38,3 +38,11 @@ To run the tests run the following command
 or        
 ```python manage.py test inventory```      
 NOTE: I have used `TestCase` class provided by django for tests which uses `unittest` module internally
+
+### 8. [Optional] Creating Test Data
+Fake data can be created by running -          
+`python manage.py create_test_data`       
+20 Suppliers and 100 Inventories will be created using factory boy      
+In case you want to override this, you can pass values `--num-suppliers` and `--num-inventories` flag in the command          
+Example:      
+`python create_test_data --num_suppliers 10 --num_inventories 50`
